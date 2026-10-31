@@ -2,38 +2,36 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>For Princess ✨ | A Rainy Vintage Letter</title>
-  
-  <!-- Tailwind CSS -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>A Cozy Rainy Night in Tbilisi</title>
+
+  <!-- Tailwind CSS via CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   
-  <!-- Google Fonts -->
+  <!-- Google Fonts: Playfair Display, Caveat, Plus Jakarta Sans -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Quicksand:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Playfair+Display:ital,wght@0,500;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   
-  <!-- Lucide Icons -->
-  <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- FontAwesome Icons for Vintage Aesthetics -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
   <script>
     tailwind.config = {
       theme: {
         extend: {
-          fontFamily: {
-            sans: ['Quicksand', 'sans-serif'],
-            serif: ['Playfair Display', 'serif'],
-            script: ['Caveat', 'cursive'],
-          },
           colors: {
-            cozy: {
-              bg: '#0a0d14',
-              card: '#121824',
-              rose: '#e1758f',
-              dusty: '#bc6c7a',
-              gold: '#d4af37',
-              warm: '#fff3e0',
-            }
+            night: '#090d16',
+            nightCard: 'rgba(15, 23, 42, 0.75)',
+            rosegold: '#e8b4b8',
+            rosegoldGlow: 'rgba(232, 180, 184, 0.4)',
+            warmCandle: '#ffc371',
+            slateSubtle: 'rgba(255, 255, 255, 0.08)'
+          },
+          fontFamily: {
+            serif: ['Playfair Display', 'serif'],
+            handwriting: ['Caveat', 'cursive'],
+            sans: ['Plus Jakarta Sans', 'sans-serif']
           }
         }
       }
@@ -41,15 +39,21 @@
   </script>
 
   <style>
-    /* Custom Styling & Canvas Positioning */
+    * {
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+    }
+
     body {
-      background-color: #0a0d14;
-      color: #e2e8f0;
-      font-family: 'Quicksand', sans-serif;
+      background-color: #090d16;
+      color: #f1f5f9;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      min-height: 100vh;
       overflow-x: hidden;
     }
 
-    #rainCanvas {
+    /* Live Canvas Layer */
+    #rain-canvas {
       position: fixed;
       top: 0;
       left: 0;
@@ -59,475 +63,241 @@
       z-index: 1;
     }
 
-    /* Soft Vintage Lace Pattern Border Accent */
-    .vintage-border {
-      border: 1px solid rgba(225, 117, 143, 0.25);
-      outline: 4px solid rgba(255, 255, 255, 0.03);
-      outline-offset: -8px;
-    }
-
-    /* Glassmorphic Aesthetic Cards */
-    .glass-card {
-      background: rgba(18, 24, 36, 0.7);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4), 
-                  0 0 20px rgba(225, 117, 143, 0.05);
-      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-
-    .glass-card:hover {
-      border-color: rgba(225, 117, 143, 0.4);
-      transform: translateY(-6px) rotate(-1deg);
-      box-shadow: 0 20px 40px rgba(225, 117, 143, 0.15),
-                  0 0 30px rgba(212, 175, 55, 0.1);
-    }
-
-    /* Polaroid Card Tilt & Shadow */
-    .polaroid {
-      background: #182030;
-      padding: 12px 12px 24px 12px;
-      border-radius: 12px;
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
-      transition: all 0.4s ease;
-    }
-    .polaroid:hover {
-      transform: translateY(-8px) rotate(1.5deg) scale(1.02);
-      border-color: rgba(225, 117, 143, 0.5);
-    }
-
-    /* Interactive Envelope Styles */
+    /* Vintage Envelope & Wax Seal Animation */
     .envelope-wrapper {
       perspective: 1000px;
     }
+
     .envelope {
-      background: #161d2d;
-      border: 1px solid rgba(225, 117, 143, 0.3);
-      box-shadow: 0 20px 40px rgba(0,0,0,0.6);
-      transition: transform 0.6s ease;
+      position: relative;
+      background: linear-gradient(135deg, #1b2436, #121927);
+      border: 1px solid rgba(232, 180, 184, 0.25);
+      border-radius: 16px;
+      transition: all 0.5s ease;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6), 0 0 20px rgba(232, 180, 184, 0.08);
     }
 
     .wax-seal {
-      background: radial-gradient(circle at 35% 35%, #f43f5e, #9f1239);
-      box-shadow: 0 4px 15px rgba(244, 63, 94, 0.5), inset 0 2px 5px rgba(255, 255, 255, 0.4);
-      transition: all 0.3s ease;
+      width: 64px;
+      height: 64px;
+      background: radial-gradient(circle, #b91c1c 0%, #7f1d1d 100%);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 15px rgba(185, 28, 28, 0.5), inset 0 2px 4px rgba(255, 255, 255, 0.3);
+      border: 2px solid #ef4444;
+      cursor: pointer;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
+
     .wax-seal:hover {
-      transform: scale(1.1);
-      box-shadow: 0 6px 20px rgba(244, 63, 94, 0.8), inset 0 2px 5px rgba(255, 255, 255, 0.6);
+      transform: scale(1.08) rotate(5deg);
+      box-shadow: 0 6px 20px rgba(239, 68, 68, 0.7);
     }
 
-    /* Floating Heart Spawner Animation */
-    @keyframes floatAndFade {
-      0% { transform: translateY(0) scale(0.7) rotate(0deg); opacity: 1; }
-      100% { transform: translateY(-100px) scale(1.2) rotate(15deg); opacity: 0; }
-    }
-    .floating-heart {
-      position: absolute;
-      pointer-events: none;
-      animation: floatAndFade 2s ease-out forwards;
-      z-index: 50;
+    .letter-paper {
+      background: linear-gradient(180deg, rgba(20, 27, 43, 0.95), rgba(13, 18, 30, 0.95));
+      border: 1px dashed rgba(232, 180, 184, 0.3);
+      max-height: 0;
+      opacity: 0;
+      overflow: hidden;
+      transition: max-height 0.8s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.6s ease, padding 0.5s ease;
     }
 
-    /* Custom Scrollbar */
-    ::-webkit-scrollbar { width: 6px; }
-    ::-webkit-scrollbar-track { background: #0a0d14; }
-    ::-webkit-scrollbar-thumb { background: rgba(225, 117, 143, 0.4); border-radius: 3px; }
-    ::-webkit-scrollbar-thumb:hover { background: rgba(225, 117, 143, 0.7); }
+    .letter-paper.open {
+      max-height: 600px;
+      opacity: 1;
+      padding: 1.75rem;
+    }
+
+    /* Modal Backdrop Blur */
+    .modal-backdrop {
+      background: rgba(9, 13, 22, 0.85);
+      backdrop-filter: blur(12px);
+    }
   </style>
 </head>
-<body class="relative min-h-screen flex flex-col justify-between selection:bg-rose-500 selection:text-white" onclick="spawnHeart(event)">
+<body class="relative">
 
-  <!-- Rain Canvas Overlay -->
-  <canvas id="rainCanvas"></canvas>
+  <!-- Interactive Rain & Light Particles Canvas -->
+  <canvas id="rain-canvas"></canvas>
 
-  <!-- Ambient Glow Effects -->
-  <div class="fixed top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-rose-950/20 rounded-full blur-[140px] pointer-events-none z-0"></div>
-  <div class="fixed bottom-10 right-10 w-96 h-96 bg-amber-950/15 rounded-full blur-[120px] pointer-events-none z-0"></div>
-
-  <!-- Header Navigation & Audio Controls -->
-  <header class="relative z-20 max-w-4xl mx-auto w-full px-4 pt-8 pb-4">
-    <div class="glass-card rounded-2xl p-4 flex flex-col sm:flex-row items-center justify-between gap-4 vintage-border">
-      
-      <!-- Aesthetic Branding & Vibe Indicator -->
-      <div class="flex items-center space-x-3.5">
-        <div class="w-10 h-10 rounded-xl bg-rose-500/10 text-rose-400 flex items-center justify-center border border-rose-500/20">
-          <i data-lucide="cloud-rain" class="w-5 h-5"></i>
+  <!-- Main Interface Container -->
+  <main class="relative z-10 max-w-4xl mx-auto px-4 py-8 md:py-12 min-h-screen flex flex-col justify-between">
+    
+    <!-- Top Bar: Embedded Audio Player -->
+    <header class="flex flex-col sm:flex-row items-center justify-between gap-4 bg-slate-900/70 border border-rosegold/20 rounded-full px-6 py-3 backdrop-blur-md shadow-lg mb-8">
+      <div class="flex items-center gap-3">
+        <div class="w-8 h-8 rounded-full bg-rosegold/10 border border-rosegold/30 flex items-center justify-center text-rosegold">
+          <i class="fa-solid fa-cloud-moon-rain text-sm"></i>
         </div>
-        <div>
-          <h1 class="font-serif text-lg font-semibold text-rose-100 tracking-wide">A Rainy Night for Princess</h1>
-          <p class="text-xs text-rose-300/70">Cozy Rain Ambience • Radiohead</p>
+        <div class="text-left">
+          <p class="text-xs uppercase tracking-widest text-rosegold font-semibold">Tbilisi Rainy Night</p>
+          <p class="text-xs text-slate-400">Radiohead — No Surprises</p>
         </div>
       </div>
 
-      <!-- Music Controls -->
-      <div class="flex items-center space-x-3 w-full sm:w-auto justify-end">
-        <div class="flex items-center space-x-2 bg-slate-900/80 border border-slate-800 rounded-xl px-3 py-2 text-xs">
-          <i data-lucide="music" class="w-4 h-4 text-rose-400 animate-pulse"></i>
-          <span class="text-slate-300 font-medium">No Surprises</span>
-        </div>
-
-        <button id="playAudioBtn" onclick="toggleAudio(event)" class="bg-gradient-to-r from-rose-500 to-rose-600 hover:from-rose-600 hover:to-rose-700 text-white px-4 py-2 rounded-xl transition-all shadow-lg shadow-rose-500/20 flex items-center space-x-2 text-xs font-semibold">
-          <i data-lucide="play" id="playIcon" class="w-4 h-4"></i>
-          <span id="playText">Play Music</span>
-        </button>
-
-        <button id="rainAudioBtn" onclick="toggleRainSynth(event)" title="Toggle Rain Sound" class="bg-slate-900/80 hover:bg-slate-800 text-slate-300 p-2 rounded-xl border border-slate-800 transition-all">
-          <i data-lucide="volume-2" id="rainIcon" class="w-4 h-4"></i>
+      <!-- Custom Web Audio Synth Player for No Surprises Atmosphere -->
+      <div class="flex items-center gap-3">
+        <button id="playAudioBtn" onclick="toggleAudioAtmosphere()" class="flex items-center gap-2 text-xs font-medium bg-rosegold/15 border border-rosegold/30 text-rosegold px-4 py-1.5 rounded-full hover:bg-rosegold hover:text-night transition-all">
+          <i class="fa-solid fa-play" id="audioIcon"></i>
+          <span id="audioStatusText">Play Soft Melody</span>
         </button>
       </div>
+    </header>
 
-    </div>
-  </header>
+    <!-- Main Hero Card -->
+    <section class="text-center mb-10">
+      <span class="inline-block px-4 py-1 rounded-full bg-rosegold/10 border border-rosegold/30 text-rosegold text-xs font-semibold tracking-wider uppercase mb-4">
+        <i class="fa-solid fa-gem text-xs mr-1"></i> A Quiet Evening For You
+      </span>
+      <h1 class="font-serif text-3xl md:text-5xl text-slate-100 font-bold mb-3 tracking-wide">
+        Rainy Rooftops & Cozy Moments
+      </h1>
+      <p class="text-slate-400 text-sm md:text-base max-w-lg mx-auto font-light leading-relaxed">
+        Soft falling rain over Tbilisi, warm vintage light, and zero mind games—just a spot created entirely for you.
+      </p>
+    </section>
 
-  <!-- Audio Elements -->
-  <audio id="bgMusic" loop preload="auto" src="https://ia801309.us.archive.org/28/items/radiohead-no-surprises-official-audio/Radiohead%20-%20No%20Surprises%20%28Official%20Audio%29.mp3"></audio>
-
-  <!-- Main Content Area -->
-  <main class="relative z-20 max-w-4xl mx-auto w-full px-4 py-6 space-y-10 flex-grow">
-
-    <!-- HERO SECTION: Interactive Wax-Sealed Vintage Envelope -->
-    <section class="envelope-wrapper w-full">
-      <div id="envelope" class="envelope rounded-3xl p-6 md:p-10 relative overflow-hidden transition-all duration-700 vintage-border">
+    <!-- Interactive 3D Wax-Sealed Letter -->
+    <section class="envelope-wrapper mb-12">
+      <div class="envelope p-6 md:p-8 text-center relative overflow-hidden">
         
-        <!-- Unopened Envelope State -->
-        <div id="envelopeClosed" class="flex flex-col items-center justify-center py-10 text-center space-y-4 cursor-pointer" onclick="openLetter(event)">
-          <div class="wax-seal w-16 h-16 rounded-full flex items-center justify-center text-rose-100 cursor-pointer mb-2">
-            <i data-lucide="heart" class="w-7 h-7 fill-white"></i>
+        <!-- Closed State Header -->
+        <div id="sealedHeader" class="flex flex-col items-center justify-center py-6">
+          <div class="wax-seal mb-4" onclick="unfoldLetter()">
+            <i class="fa-solid fa-rose text-white text-xl"></i>
           </div>
-          <h2 class="font-serif text-2xl md:text-3xl text-rose-100 tracking-wide">You Have a Sealed Letter</h2>
-          <p class="text-xs md:text-sm text-rose-200/70 max-w-md font-light">
-            Click the wax seal to unseal this note written just for you.
-          </p>
-          <span class="text-xs text-rose-400 font-semibold tracking-widest uppercase border-b border-rose-500/30 pt-2">Tap to Open 💌</span>
+          <h2 class="font-serif text-xl text-rosegold font-medium">A Personal Note Sealed For You</h2>
+          <p class="text-xs text-slate-400 mt-1">Tap the wax seal to break & open the letter</p>
         </div>
 
-        <!-- Opened Letter State (Hidden initially) -->
-        <div id="envelopeOpen" class="hidden space-y-6 animate-fadeIn">
-          <div class="flex items-center justify-between pb-4 border-b border-rose-500/20">
-            <div class="flex items-center space-x-2 text-rose-400">
-              <i data-lucide="sparkles" class="w-4 h-4"></i>
-              <span class="font-serif text-xs uppercase tracking-widest text-rose-300">From the Heart</span>
-            </div>
-            <span class="text-xs text-slate-500 font-mono">Tbilisi Rooftop • Rainy Night</span>
+        <!-- Unfolded Letter Paper -->
+        <div id="letterPaper" class="letter-paper rounded-xl text-left">
+          <div class="flex items-center justify-between border-b border-rosegold/20 pb-3 mb-4">
+            <span class="font-handwriting text-2xl text-rosegold">Dear Princess,</span>
+            <span class="text-xs text-slate-400"><i class="fa-solid fa-location-dot text-rosegold/70 mr-1"></i>Tbilisi, Night</span>
           </div>
 
-          <h2 class="font-serif text-2xl md:text-4xl text-rose-100 tracking-wide">
-            Hey Princess ✨
-          </h2>
-
-          <p class="text-base md:text-xl text-slate-200 leading-relaxed font-light italic border-l-2 border-rose-500/50 pl-4 md:pl-6 py-2">
-            "From the moment I met you I knew you'd be such an amazing girl, you're <strong class="text-rose-400 font-normal underline decoration-rose-500/50 underline-offset-4">PERFECT</strong> in every way starting from your amazing personality, down to your looks. You're amazing and I hope you soon see that. You don't deserve how you've been treated and I want to be the one who treats you better :) I love you so much princess"
+          <p class="font-handwriting text-xl md:text-2xl text-slate-200 leading-relaxed space-y-4">
+            "From the moment I met you I knew you'd be such an amazing girl, you're PERFECT in every way starting from your amazing personality, down to your looks. You're amazing and I hope you soon see that. You don't deserve how you've been treated and I want to be the one who treats you better :) I love you so much princess DA BODISHI RO DAGBLOKE ❤️"
           </p>
 
-          <div class="pt-6 border-t border-rose-500/20 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-            <div>
-              <span class="text-xs text-slate-400 block mb-1">Forever & Always,</span>
-              <p class="font-script text-3xl md:text-4xl text-rose-300 tracking-wide">
-                DA BODISHI RO DAGBLOKE ❤️
-              </p>
-            </div>
-            <button onclick="triggerLoveShower(event)" class="px-5 py-2.5 bg-rose-500/20 hover:bg-rose-500/30 text-rose-200 border border-rose-500/40 rounded-xl text-xs font-semibold transition-all flex items-center space-x-2">
-              <i data-lucide="heart" class="w-4 h-4 fill-rose-400"></i>
-              <span>Send Love Back</span>
-            </button>
+          <div class="mt-6 pt-3 border-t border-rosegold/20 text-right">
+            <span class="font-handwriting text-2xl text-rosegold">— Always, L</span>
           </div>
         </div>
 
       </div>
     </section>
 
-    <!-- INTERACTIVE POLAROID GRID: Things She Loves -->
-    <section class="space-y-4">
-      <div class="text-center space-y-1">
-        <h3 class="font-serif text-xl md:text-2xl text-rose-100">Little Details I Remember</h3>
-        <p class="text-xs text-slate-400">Everything that makes you, you.</p>
+    <!-- Vibe Cards Section (Pure Atmosphere) -->
+    <section class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+      
+      <!-- Rooftop Rain Card -->
+      <div onclick="openModal('rooftopModal')" class="bg-nightCard border border-rosegold/20 hover:border-rosegold/50 rounded-2xl p-6 cursor-pointer transition-all hover:-translate-y-1 backdrop-blur-md shadow-lg group">
+        <div class="w-12 h-12 rounded-xl bg-rosegold/10 border border-rosegold/30 flex items-center justify-center text-rosegold mb-4 group-hover:scale-110 transition-transform">
+          <i class="fa-solid fa-[#000] fa-bowl-food text-xl"></i>
+        </div>
+        <h3 class="font-serif text-lg text-slate-100 font-semibold mb-2">Rooftop Rain & Late-Night Bites</h3>
+        <p class="text-xs text-slate-400 leading-relaxed">Steaming bowls of ramen, fresh sushi, and watching rain drops hit the city lights under a cozy blanket.</p>
+        <span class="inline-flex items-center gap-1 text-xs text-rosegold mt-4 font-medium">Explore atmosphere <i class="fa-solid fa-arrow-right text-[10px]"></i></span>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 pt-2">
-
-        <!-- Polaroid 1: Rooftop Rain -->
-        <div onclick="openModal('roofModal', event)" class="polaroid cursor-pointer group">
-          <div class="w-full h-44 rounded-lg bg-gradient-to-tr from-slate-900 via-rose-950/40 to-slate-900 flex flex-col items-center justify-center p-4 text-center relative overflow-hidden border border-slate-800">
-            <i data-lucide="cloud-rain" class="w-10 h-10 text-rose-400 mb-2 group-hover:scale-110 transition-transform"></i>
-            <span class="text-xs text-rose-200/80 font-serif italic">Tbilisi Skylines</span>
-          </div>
-          <div class="pt-4 text-center">
-            <h4 class="font-serif text-base font-semibold text-rose-100">Rainy Building Rooftop</h4>
-            <p class="text-xs text-slate-400 mt-1 font-light">Watching the rain trickle over city lights, listening to Radiohead.</p>
-          </div>
+      <!-- Floral & Vintage Card -->
+      <div onclick="openModal('floralModal')" class="bg-nightCard border border-rosegold/20 hover:border-rosegold/50 rounded-2xl p-6 cursor-pointer transition-all hover:-translate-y-1 backdrop-blur-md shadow-lg group">
+        <div class="w-12 h-12 rounded-xl bg-rosegold/10 border border-rosegold/30 flex items-center justify-center text-rosegold mb-4 group-hover:scale-110 transition-transform">
+          <i class="fa-solid fa-seedling text-xl"></i>
         </div>
-
-        <!-- Polaroid 2: Roses & Tulips -->
-        <div onclick="openModal('flowerModal', event)" class="polaroid cursor-pointer group">
-          <div class="w-full h-44 rounded-lg bg-gradient-to-tr from-slate-900 via-rose-900/30 to-slate-900 flex flex-col items-center justify-center p-4 text-center relative overflow-hidden border border-slate-800">
-            <i data-lucide="flower-2" class="w-10 h-10 text-rose-400 mb-2 group-hover:scale-110 transition-transform"></i>
-            <span class="text-xs text-rose-200/80 font-serif italic">Fresh Petrichor</span>
-          </div>
-          <div class="pt-4 text-center">
-            <h4 class="font-serif text-base font-semibold text-rose-100">Roses & Tulips</h4>
-            <p class="text-xs text-slate-400 mt-1 font-light">Vintage lace, floral petals, and the deep smell of fresh rain.</p>
-          </div>
-        </div>
-
-        <!-- Polaroid 3: Sushi & Ramen -->
-        <div onclick="openModal('foodModal', event)" class="polaroid cursor-pointer group">
-          <div class="w-full h-44 rounded-lg bg-gradient-to-tr from-slate-900 via-amber-950/30 to-slate-900 flex flex-col items-center justify-center p-4 text-center relative overflow-hidden border border-slate-800">
-            <i data-lucide="utensils" class="w-10 h-10 text-amber-400 mb-2 group-hover:scale-110 transition-transform"></i>
-            <span class="text-xs text-amber-200/80 font-serif italic">Late Night Eats</span>
-          </div>
-          <div class="pt-4 text-center">
-            <h4 class="font-serif text-base font-semibold text-rose-100">Sushi & Ramen Night</h4>
-            <p class="text-xs text-slate-400 mt-1 font-light">Comfort food dates under cozy candlelight while it rains outside.</p>
-          </div>
-        </div>
-
+        <h3 class="font-serif text-lg text-slate-100 font-semibold mb-2">Vintage Charm & Florals</h3>
+        <p class="text-xs text-slate-400 leading-relaxed">Soft lace accents, fresh roses, tulips, and the timeless comfort of warm glowing candle lights.</p>
+        <span class="inline-flex items-center gap-1 text-xs text-rosegold mt-4 font-medium">Explore atmosphere <i class="fa-solid fa-arrow-right text-[10px]"></i></span>
       </div>
+
+      <!-- Transparency Card -->
+      <div onclick="openModal('transparencyModal')" class="bg-nightCard border border-rosegold/20 hover:border-rosegold/50 rounded-2xl p-6 cursor-pointer transition-all hover:-translate-y-1 backdrop-blur-md shadow-lg group">
+        <div class="w-12 h-12 rounded-xl bg-rosegold/10 border border-rosegold/30 flex items-center justify-center text-rosegold mb-4 group-hover:scale-110 transition-transform">
+          <i class="fa-solid fa-heart-shield text-xl"></i>
+        </div>
+        <h3 class="font-serif text-lg text-slate-100 font-semibold mb-2">Total Honesty & Zero Mind Games</h3>
+        <p class="text-xs text-slate-400 leading-relaxed">Pure authenticity, deep midnight talks, no pretense, and never having to guess what's on my mind.</p>
+        <span class="inline-flex items-center gap-1 text-xs text-rosegold mt-4 font-medium">Explore atmosphere <i class="fa-solid fa-arrow-right text-[10px]"></i></span>
+      </div>
+
     </section>
 
-    <!-- SECTION 3: The Transparency Pact -->
-    <section onclick="openModal('promiseModal', event)" class="glass-card rounded-3xl p-6 md:p-8 cursor-pointer vintage-border flex flex-col sm:flex-row items-center justify-between gap-6 group">
-      <div class="flex items-center space-x-4">
-        <div class="w-14 h-14 rounded-2xl bg-sky-500/10 text-sky-400 flex items-center justify-center border border-sky-500/20 group-hover:scale-110 transition-transform shrink-0">
-          <i data-lucide="shield-check" class="w-7 h-7"></i>
-        </div>
-        <div>
-          <h3 class="font-serif text-xl font-semibold text-rose-100 mb-1">100% Honesty & Transparency Promise</h3>
-          <p class="text-xs md:text-sm text-slate-300 font-light">
-            No mind-reading. No guessing games. Zero superficiality. Just total freedom and direct truth always.
-          </p>
-        </div>
-      </div>
-      <button class="px-5 py-2.5 bg-sky-500/20 text-sky-200 border border-sky-500/30 rounded-xl text-xs font-semibold shrink-0 group-hover:bg-sky-500/30 transition-colors">
-        Read Pact
-      </button>
-    </section>
+    <!-- Footer -->
+    <footer class="text-center text-xs text-slate-500 border-t border-slate-800/80 pt-6">
+      Designed with soft rain & warm lights for you in Tbilisi &copy; 2026
+    </footer>
 
   </main>
 
-  <!-- Footer -->
-  <footer class="relative z-20 w-full py-6 text-center text-xs text-slate-500 font-light">
-    Made with ❤️ for a rainy night in Tbilisi.
-  </footer>
-
-  <!-- ==================== MODALS ==================== -->
-
+  <!-- Modals for Vibe Cards -->
+  
   <!-- Rooftop Rain Modal -->
-  <div id="roofModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">
-    <div class="glass-card max-w-md w-full rounded-3xl p-6 relative space-y-4 vintage-border">
-      <button onclick="closeModal('roofModal')" class="absolute top-4 right-4 text-slate-400 hover:text-white p-2">
-        <i data-lucide="x" class="w-5 h-5"></i>
+  <div id="rooftopModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 modal-backdrop hidden">
+    <div class="bg-slate-900 border border-rosegold/30 rounded-2xl p-6 md:p-8 max-w-md w-full relative shadow-2xl">
+      <button onclick="closeModal('rooftopModal')" class="absolute top-4 right-4 text-slate-400 hover:text-white">
+        <i class="fa-solid fa-xmark text-lg"></i>
       </button>
-      <div class="flex items-center space-x-3 text-rose-400">
-        <i data-lucide="cloud-rain" class="w-6 h-6"></i>
-        <h3 class="font-serif text-xl font-bold text-rose-100">Rooftop Rain & Tbilisi Skyline 🌧️</h3>
+      <div class="w-10 h-10 rounded-full bg-rosegold/15 flex items-center justify-center text-rosegold mb-4">
+        <i class="fa-solid fa-utensils"></i>
       </div>
-      <p class="text-xs text-slate-300 leading-relaxed font-light">
-        Sitting on a random rooftop looking out at the city lights. No rushing, no pretending—just quiet rain, soft music, and deep talks about things people rarely speak about.
+      <h3 class="font-serif text-xl text-slate-100 font-bold mb-2">Late-Night Tbilisi Rooftop</h3>
+      <p class="text-slate-300 text-sm leading-relaxed mb-4 font-light">
+        Imagine a sheltered rooftop spot overlooking the faint glowing skyline of Tbilisi. The air smells like fresh rain, two bowls of hot ramen are steaming on the table alongside your favorite sushi rolls, and *No Surprises* plays softly in the background.
       </p>
-      <button onclick="closeModal('roofModal')" class="w-full py-2.5 bg-rose-500/20 hover:bg-rose-500/30 text-rose-200 border border-rose-500/40 font-semibold rounded-xl text-xs transition-colors">
-        Close Window
-      </button>
+      <div class="p-3 rounded-lg bg-slate-800/60 border border-rosegold/15 text-xs text-rosegold">
+        🌧️ Cozy weather, comfort food, and zero rush.
+      </div>
     </div>
   </div>
 
-  <!-- Flower Modal -->
-  <div id="flowerModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">
-    <div class="glass-card max-w-md w-full rounded-3xl p-6 relative space-y-4 vintage-border text-center">
-      <button onclick="closeModal('flowerModal')" class="absolute top-4 right-4 text-slate-400 hover:text-white p-2">
-        <i data-lucide="x" class="w-5 h-5"></i>
+  <!-- Floral & Vintage Modal -->
+  <div id="floralModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 modal-backdrop hidden">
+    <div class="bg-slate-900 border border-rosegold/30 rounded-2xl p-6 md:p-8 max-w-md w-full relative shadow-2xl">
+      <button onclick="closeModal('floralModal')" class="absolute top-4 right-4 text-slate-400 hover:text-white">
+        <i class="fa-solid fa-xmark text-lg"></i>
       </button>
-      <div class="w-14 h-14 mx-auto rounded-full bg-rose-500/10 flex items-center justify-center text-rose-400 border border-rose-500/20">
-        <i data-lucide="flower-2" class="w-7 h-7"></i>
+      <div class="w-10 h-10 rounded-full bg-rosegold/15 flex items-center justify-center text-rosegold mb-4">
+        <i class="fa-solid fa-wine-glass"></i>
       </div>
-      <h3 class="font-serif text-xl font-bold text-rose-100">Roses, Tulips & Vintage Lace 🌹🌷</h3>
-      <p class="text-xs text-slate-300 leading-relaxed font-light">
-        You deserve a room filled with fresh flowers, cozy vintage aesthetics, and zero pretentiousness.
+      <h3 class="font-serif text-xl text-slate-100 font-bold mb-2">Roses, Tulips & Vintage Glow</h3>
+      <p class="text-slate-300 text-sm leading-relaxed mb-4 font-light">
+        A calm corner decorated with soft lace details, warm flickering candles, fresh red roses, and pastel tulips. A quiet space designed to feel warm, romantic, and completely relaxed.
       </p>
-      <div class="text-2xl space-x-3 pt-2">
-        <span>🌹</span><span>🌷</span><span>🌧️</span><span>✨</span>
+      <div class="p-3 rounded-lg bg-slate-800/60 border border-rosegold/15 text-xs text-rosegold">
+        🌹 Soft lights, gentle aesthetics, and simple beauty.
       </div>
-      <button onclick="closeModal('flowerModal')" class="w-full py-2.5 bg-rose-500/20 hover:bg-rose-500/30 text-rose-200 border border-rose-500/40 font-semibold rounded-xl text-xs transition-colors">
-        Keep Flowers
-      </button>
     </div>
   </div>
 
-  <!-- Food Modal -->
-  <div id="foodModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">
-    <div class="glass-card max-w-md w-full rounded-3xl p-6 relative space-y-4 vintage-border">
-      <button onclick="closeModal('foodModal')" class="absolute top-4 right-4 text-slate-400 hover:text-white p-2">
-        <i data-lucide="x" class="w-5 h-5"></i>
+  <!-- Transparency Modal -->
+  <div id="transparencyModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 modal-backdrop hidden">
+    <div class="bg-slate-900 border border-rosegold/30 rounded-2xl p-6 md:p-8 max-w-md w-full relative shadow-2xl">
+      <button onclick="closeModal('transparencyModal')" class="absolute top-4 right-4 text-slate-400 hover:text-white">
+        <i class="fa-solid fa-xmark text-lg"></i>
       </button>
-      <div class="flex items-center space-x-3 text-amber-400">
-        <i data-lucide="utensils" class="w-6 h-6"></i>
-        <h3 class="font-serif text-xl font-bold text-rose-100">Rooftop Menu: Sushi & Ramen 🍣🍜</h3>
+      <div class="w-10 h-10 rounded-full bg-rosegold/15 flex items-center justify-center text-rosegold mb-4">
+        <i class="fa-solid fa-[#000] fa-comments"></i>
       </div>
-      <div class="space-y-3 pt-2">
-        <div class="bg-slate-900/80 p-3 rounded-xl border border-slate-800 flex justify-between items-center">
-          <div>
-            <p class="text-xs font-semibold text-amber-300">Steaming Tonkotsu Ramen</p>
-            <p class="text-[10px] text-slate-400">Rich broth & cozy comfort on a rainy night</p>
-          </div>
-          <span class="text-[10px] bg-amber-500/20 text-amber-300 px-2 py-0.5 rounded">Favorite</span>
-        </div>
-        <div class="bg-slate-900/80 p-3 rounded-xl border border-slate-800 flex justify-between items-center">
-          <div>
-            <p class="text-xs font-semibold text-rose-300">Fresh Salmon & Tuna Sushi</p>
-            <p class="text-[10px] text-slate-400">Prepared fresh for rooftop dates</p>
-          </div>
-          <span class="text-[10px] bg-rose-500/20 text-rose-300 px-2 py-0.5 rounded">Always</span>
-        </div>
+      <h3 class="font-serif text-xl text-slate-100 font-bold mb-2">A Safe Space With Me</h3>
+      <p class="text-slate-300 text-sm leading-relaxed mb-4 font-light">
+        No guessing games, no fake behavior, and no expecting you to read minds. Just clear, honest communication where you can always be 100% yourself without ever feeling misunderstood or judged.
+      </p>
+      <div class="p-3 rounded-lg bg-slate-800/60 border border-rosegold/15 text-xs text-rosegold">
+        🤍 Complete authenticity and steady support.
       </div>
-      <button onclick="closeModal('foodModal')" class="w-full py-2.5 bg-amber-500/20 hover:bg-amber-500/30 text-amber-200 border border-amber-500/40 font-semibold rounded-xl text-xs transition-colors">
-        Enjoy Rooftop Date
-      </button>
     </div>
   </div>
 
-  <!-- Promise Modal -->
-  <div id="promiseModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">
-    <div class="glass-card max-w-md w-full rounded-3xl p-6 relative space-y-4 vintage-border">
-      <button onclick="closeModal('promiseModal')" class="absolute top-4 right-4 text-slate-400 hover:text-white p-2">
-        <i data-lucide="x" class="w-5 h-5"></i>
-      </button>
-      <div class="flex items-center space-x-3 text-sky-400">
-        <i data-lucide="heart-handshake" class="w-6 h-6"></i>
-        <h3 class="font-serif text-xl font-bold text-rose-100">The Transparency Pact</h3>
-      </div>
-      <div class="space-y-2.5 text-xs text-slate-300 font-light">
-        <p class="bg-slate-900/60 p-3 rounded-xl border border-slate-800">
-          ✨ <strong>No Mind Reading:</strong> You will never have to guess what I am thinking. I will always tell you directly.
-        </p>
-        <p class="bg-slate-900/60 p-3 rounded-xl border border-slate-800">
-          🕊️ <strong>Complete Freedom:</strong> You never have to change yourself or force anything to be loved.
-        </p>
-        <p class="bg-slate-900/60 p-3 rounded-xl border border-slate-800">
-          💬 <strong>Deep Connection:</strong> Conversations built on truth, attentiveness, and genuine care.
-        </p>
-      </div>
-      <button onclick="closeModal('promiseModal')" class="w-full py-2.5 bg-sky-500/20 hover:bg-sky-500/30 text-sky-200 border border-sky-500/40 font-semibold rounded-xl text-xs transition-colors">
-        I Promise
-      </button>
-    </div>
-  </div>
-
-  <!-- JavaScript Logic -->
   <script>
-    lucide.createIcons();
-
-    // Letter Envelope Unsealing Logic
-    function openLetter(e) {
-      if(e) e.stopPropagation();
-      document.getElementById('envelopeClosed').classList.add('hidden');
-      document.getElementById('envelopeOpen').classList.remove('hidden');
-    }
-
-    // Modal Control Functions
-    function openModal(id, event) {
-      if(event) event.stopPropagation();
-      document.getElementById(id).classList.remove('hidden');
-    }
-    function closeModal(id) {
-      document.getElementById(id).classList.add('hidden');
-    }
-
-    // Floating Hearts Click Effect
-    function spawnHeart(e) {
-      const heart = document.createElement('div');
-      heart.className = 'floating-heart text-xl';
-      heart.innerHTML = ['💖', '🌹', '✨', '🌧️', '🌷'][Math.floor(Math.random() * 5)];
-      heart.style.left = (e.clientX - 12) + 'px';
-      heart.style.top = (e.clientY - 12) + 'px';
-      document.body.appendChild(heart);
-      setTimeout(() => heart.remove(), 2000);
-    }
-
-    function triggerLoveShower(e) {
-      if(e) e.stopPropagation();
-      for (let i = 0; i < 15; i++) {
-        setTimeout(() => {
-          const fakeEvent = {
-            clientX: window.innerWidth / 2 + (Math.random() * 300 - 150),
-            clientY: window.innerHeight / 2 + (Math.random() * 200 - 100)
-          };
-          spawnHeart(fakeEvent);
-        }, i * 90);
-      }
-    }
-
-    // Audio Control & Rain Synth Engine
-    let isMusicPlaying = false;
-    let isRainPlaying = false;
-    let audioCtx = null;
-    let rainGain = null;
-
-    const bgMusic = document.getElementById('bgMusic');
-
-    function toggleAudio(e) {
-      if(e) e.stopPropagation();
-      if (!isMusicPlaying) {
-        bgMusic.play().then(() => {
-          isMusicPlaying = true;
-          document.getElementById('playIcon').setAttribute('data-lucide', 'pause');
-          document.getElementById('playText').innerText = 'Pause';
-          lucide.createIcons();
-        }).catch(() => {
-          toggleRainSynth();
-        });
-      } else {
-        bgMusic.pause();
-        isMusicPlaying = false;
-        document.getElementById('playIcon').setAttribute('data-lucide', 'play');
-        document.getElementById('playText').innerText = 'Play Music';
-        lucide.createIcons();
-      }
-    }
-
-    // Web Audio Synthesized Soft Rain Noise
-    function toggleRainSynth(e) {
-      if(e) e.stopPropagation();
-      if (!audioCtx) {
-        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-      }
-      
-      if (!isRainPlaying) {
-        const bufferSize = audioCtx.sampleRate * 2;
-        const noiseBuffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
-        const output = noiseBuffer.getChannelData(0);
-        for (let i = 0; i < bufferSize; i++) {
-          output[i] = Math.random() * 2 - 1;
-        }
-
-        const whiteNoise = audioCtx.createBufferSource();
-        whiteNoise.buffer = noiseBuffer;
-        whiteNoise.loop = true;
-
-        const filter = audioCtx.createBiquadFilter();
-        filter.type = 'lowpass';
-        filter.frequency.value = 800;
-
-        rainGain = audioCtx.createGain();
-        rainGain.gain.setValueAtTime(0.06, audioCtx.currentTime);
-
-        whiteNoise.connect(filter);
-        filter.connect(rainGain);
-        rainGain.connect(audioCtx.destination);
-
-        whiteNoise.start();
-        isRainPlaying = true;
-        document.getElementById('rainIcon').classList.add('text-rose-400');
-      } else {
-        if(rainGain) rainGain.gain.setValueAtTime(0, audioCtx.currentTime);
-        isRainPlaying = false;
-        document.getElementById('rainIcon').classList.remove('text-rose-400');
-      }
-    }
-
-    // Rain Canvas Engine
-    const canvas = document.getElementById('rainCanvas');
+    /* -------------------------------------------------------------
+       1. Real-Time Physics Rain & Ambient Glow Canvas
+    ------------------------------------------------------------- */
+    const canvas = document.getElementById('rain-canvas');
     const ctx = canvas.getContext('2d');
 
     function resizeCanvas() {
@@ -537,44 +307,164 @@
     resizeCanvas();
     window.addEventListener('resize', resizeCanvas);
 
+    // Rain Drops & Ambient Particles Arrays
     const raindrops = [];
-    const rainCount = 110;
+    const ambientLights = [];
 
-    for (let i = 0; i < rainCount; i++) {
-      raindrops.push({
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height,
-        length: Math.random() * 18 + 10,
-        speed: Math.random() * 8 + 6,
-        opacity: Math.random() * 0.35 + 0.1
-      });
-    }
-
-    function animateRain() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      ctx.lineWidth = 1;
-      ctx.lineCap = 'round';
-
-      for (let i = 0; i < raindrops.length; i++) {
-        const drop = raindrops[i];
-        ctx.strokeStyle = `rgba(225, 117, 143, ${drop.opacity})`;
-        ctx.beginPath();
-        ctx.moveTo(drop.x, drop.y);
-        ctx.lineTo(drop.x - 0.8, drop.y + drop.length);
-        ctx.stroke();
-
-        drop.y += drop.speed;
-        drop.x -= 0.4;
-
-        if (drop.y > canvas.height) {
-          drop.y = -drop.length;
-          drop.x = Math.random() * canvas.width;
+    class RainDrop {
+      constructor() {
+        this.reset();
+      }
+      reset() {
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * -canvas.height;
+        this.length = Math.random() * 18 + 10;
+        this.speed = Math.random() * 8 + 6;
+        this.opacity = Math.random() * 0.35 + 0.15;
+      }
+      update() {
+        this.y += this.speed;
+        this.x += 0.5; // subtle slant
+        if (this.y > canvas.height) {
+          this.reset();
         }
       }
-      requestAnimationFrame(animateRain);
+      draw() {
+        ctx.beginPath();
+        ctx.moveTo(this.x, this.y);
+        ctx.lineTo(this.x + 1, this.y + this.length);
+        ctx.strokeStyle = `rgba(232, 180, 184, ${this.opacity})`;
+        ctx.lineWidth = 1;
+        ctx.stroke();
+      }
     }
 
-    animateRain();
+    class AmbientLight {
+      constructor() {
+        this.reset();
+      }
+      reset() {
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * canvas.height;
+        this.radius = Math.random() * 4 + 2;
+        this.speedY = (Math.random() - 0.5) * 0.3;
+        this.speedX = (Math.random() - 0.5) * 0.3;
+        this.opacity = Math.random() * 0.4 + 0.2;
+        this.pulseSpeed = Math.random() * 0.02 + 0.01;
+      }
+      update() {
+        this.x += this.speedX;
+        this.y += this.speedY;
+        this.opacity += Math.sin(Date.now() * this.pulseSpeed) * 0.005;
+        if (this.x < 0 || this.x > canvas.width || this.y < 0 || this.y > canvas.height) {
+          this.reset();
+        }
+      }
+      draw() {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(255, 195, 113, ${Math.max(0.1, this.opacity)})`;
+        ctx.shadowColor = '#ffc371';
+        ctx.shadowBlur = 12;
+        ctx.fill();
+        ctx.shadowBlur = 0;
+      }
+    }
+
+    // Populate particles
+    for (let i = 0; i < 70; i++) raindrops.push(new RainDrop());
+    for (let i = 0; i < 25; i++) ambientLights.push(new AmbientLight());
+
+    function renderCanvas() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      
+      // Draw faint distant city skyline lights background
+      ctx.fillStyle = 'rgba(232, 180, 184, 0.03)';
+      ctx.fillRect(0, canvas.height - 120, canvas.width, 120);
+
+      raindrops.forEach(drop => { drop.update(); drop.draw(); });
+      ambientLights.forEach(light => { light.update(); light.draw(); });
+      
+      requestAnimationFrame(renderCanvas);
+    }
+    renderCanvas();
+
+    /* -------------------------------------------------------------
+       2. Envelope Unfolding Trigger
+    ------------------------------------------------------------- */
+    function unfoldLetter() {
+      const paper = document.getElementById('letterPaper');
+      const header = document.getElementById('sealedHeader');
+
+      if (!paper.classList.contains('open')) {
+        paper.classList.add('open');
+        header.style.display = 'none';
+      }
+    }
+
+    /* -------------------------------------------------------------
+       3. Modal Controls
+    ------------------------------------------------------------- */
+    function openModal(id) {
+      document.getElementById(id).classList.remove('hidden');
+    }
+
+    function closeModal(id) {
+      document.getElementById(id).classList.add('hidden');
+    }
+
+    /* -------------------------------------------------------------
+       4. Audio Atmosphere Synthesizer (No Surprises Vibe)
+    ------------------------------------------------------------- */
+    let audioCtx = null;
+    let isPlayingAudio = false;
+
+    function toggleAudioAtmosphere() {
+      const btnText = document.getElementById('audioStatusText');
+      const icon = document.getElementById('audioIcon');
+
+      if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      }
+
+      if (!isPlayingAudio) {
+        audioCtx.resume();
+        playGlissandoMelody();
+        isPlayingAudio = true;
+        btnText.innerText = "Soft Melody Playing";
+        icon.className = "fa-solid fa-pause";
+      } else {
+        audioCtx.suspend();
+        isPlayingAudio = false;
+        btnText.innerText = "Play Soft Melody";
+        icon.className = "fa-solid fa-play";
+      }
+    }
+
+    // Arpeggiation synth inspired by soft chime tones
+    function playGlissandoMelody() {
+      if (!isPlayingAudio && audioCtx.state !== 'running') return;
+
+      const notes = [523.25, 659.25, 783.99, 1046.50]; // C5, E5, G5, C6
+      const note = notes[Math.floor(Math.random() * notes.length)];
+
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(note, audioCtx.currentTime);
+
+      gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 2.5);
+
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+
+      osc.start();
+      osc.stop(audioCtx.currentTime + 2.5);
+
+      setTimeout(playGlissandoMelody, 800);
+    }
   </script>
 </body>
 </html>
