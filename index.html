@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>A Rainy Night in Tbilisi ✨</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Plus+Jakarta+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    /* Custom Styling & Canvas Positioning */
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-color: #0b0f19;
+      color: #e2e8f0;
+      overflow-x: hidden;
+    }
+    .font-handwriting {
+      font-family: 'Caveat', cursive;
+    }
+    #rainCanvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 10;
+    }
+    /* Animated City & Night Sky Elements */
+    .twinkle {
+      animation: pulse 3s infinite ease-in-out;
+    }
+    .cloud-slow {
+      animation: floatClouds 60s linear infinite;
+    }
+    @keyframes floatClouds {
+      from { transform: translateX(-10%); }
+      to { transform: translateX(100%); }
+    }
+    /* Glassmorphic Cards */
+    .glass-card {
+      background: rgba(15, 23, 42, 0.75);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+    }
+    .glass-card:hover {
+      border-color: rgba(244, 114, 182, 0.3);
+      transform: translateY(-2px);
+    }
+  </style>
+</head>
+<body class="relative min-h-screen flex flex-col justify-between">
+
+  <!-- Rain Layer -->
+  <canvas id="rainCanvas"></canvas>
+
+  <!-- Animated Background Layer (Tbilisi Skyline & Night Sky) -->
+  <div class="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+    <!-- Sky Gradient -->
+    <div class="absolute inset-0 bg-gradient-to-b from-[#05070f] via-[#0b1222] to-[#111827]"></div>
+
+    <!-- Stars & Moon Glow -->
+    <div class="absolute top-10 right-16 w-32 h-32 bg-pink-500/10 rounded-full blur-3xl twinkle"></div>
+    <div class="absolute top-20 left-1/4 w-2 h-2 bg-white rounded-full opacity-80 twinkle"></div>
+    <div class="absolute top-36 left-2/3 w-1.5 h-1.5 bg-pink-200 rounded-full opacity-60 twinkle" style="animation-delay: 1s;"></div>
+    <div class="absolute top-12 left-3/4 w-2 h-2 bg-blue-200 rounded-full opacity-70 twinkle" style="animation-delay: 2s;"></div>
+
+    <!-- Floating Clouds -->
+    <div class="cloud-slow absolute top-12 -left-40 w-96 h-20 bg-gradient-to-r from-transparent via-slate-800/20 to-transparent blur-xl"></div>
+
+    <!-- Silhouette City Skyline -->
+    <div class="absolute bottom-0 w-full h-48 opacity-40 flex items-end justify-between px-2">
+      <!-- Simulated Rooftop / City Lights Silhouette -->
+      <div class="w-full h-full bg-repeat-x bg-bottom" style="background-image: url('data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 1000 200\' fill=\'%23070a12\'><path d=\'M0,200 L0,120 L40,120 L40,90 L70,90 L70,120 L120,120 L120,70 L160,70 L160,120 L220,120 L220,100 L260,100 L260,120 L320,120 L320,50 L370,50 L370,120 L450,120 L450,80 L500,80 L500,120 L580,120 L580,60 L630,60 L630,120 L700,120 L700,90 L750,90 L750,120 L820,120 L820,40 L880,40 L880,120 L1000,120 L1000,200 Z\'/></svg>');"></div>
+    </div>
+
+    <!-- City Warm Glow Accent -->
+    <div class="absolute bottom-0 inset-x-0 h-24 bg-gradient-to-t from-amber-500/10 via-pink-500/5 to-transparent"></div>
+  </div>
+
+  <!-- Main Website Content -->
+  <div class="relative z-20 max-w-3xl mx-auto px-4 py-8 w-full flex-grow flex flex-col justify-center">
+    
+    <!-- Audio Player Header -->
+    <header class="glass-card rounded-2xl p-4 mb-8 flex items-center justify-between transition-all">
+      <div class="flex items-center space-x-3">
+        <div class="p-2.5 bg-pink-500/10 text-pink-400 rounded-xl">
+          <i data-lucide="music"></i>
+        </div>
+        <div>
+          <p class="text-xs text-slate-400 font-semibold tracking-wider uppercase">Currently Playing</p>
+          <p class="text-sm font-bold text-slate-100">No Surprises — Radiohead</p>
+        </div>
+      </div>
+      <!-- Embedded Radiohead Track -->
+      <iframe class="rounded-lg h-10 w-36 md:w-48 opacity-80" src="https://open.spotify.com/embed/track/10mXmT3jGLiA2q5HA6CjuM?utm_source=generator&theme=0" width="100%" height="152" frameborder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+    </header>
+
+    <!-- Main Rooftop Hero & Letter Section -->
+    <main class="space-y-6">
+      
+      <!-- Letter Card -->
+      <div class="glass-card rounded-3xl p-6 md:p-8 space-y-4">
+        <div class="flex items-center space-x-2 text-pink-400 text-sm font-semibold">
+          <i data-lucide="cloud-rain" class="w-4 h-4"></i>
+          <span>Tbilisi Rooftop • Rainy Night</span>
+        </div>
+        
+        <h1 class="text-2xl md:text-3xl font-bold text-white tracking-tight">
+          Hey Princess ✨
+        </h1>
+
+        <p class="text-slate-300 leading-relaxed text-base md:text-lg pt-2">
+          "From the moment I met you I knew you'd be such an amazing girl, you're <span class="text-pink-400 font-bold">PERFECT</span> in every way starting from your amazing personality, down to your looks. You're amazing and I hope you soon see that. You don't deserve how you've been treated and I want to be the one who treats you better :) I love you so much princess"
+        </p>
+
+        <div class="pt-4 flex justify-between items-end border-t border-slate-800">
+          <span class="font-handwriting text-2xl text-pink-300">DA BODISHI RO DAGBLOKE ❤️</span>
+          <span class="text-xs text-slate-500">Only for you</span>
+        </div>
+      </div>
+
+      <!-- Interactive Rooftop Details Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        
+        <!-- Card 1: Comfort Food -->
+        <div class="glass-card rounded-2xl p-5 flex flex-col justify-between transition-all hover:scale-[1.02] cursor-pointer" onclick="alert('Rooftop date night menu: Unlimited Sushi & Ramen! 🍜🍣')">
+          <div class="flex justify-between items-start mb-3">
+            <span class="p-2 bg-amber-500/10 text-amber-400 rounded-lg"><i data-lucide="utensils"></i></span>
+            <span class="text-xs text-slate-500">Favorite</span>
+          </div>
+          <div>
+            <h3 class="text-lg font-bold text-white mb-1">Late Night Bites</h3>
+            <p class="text-xs text-slate-400">Sushi & Ramen on the roof while listening to the rain.</p>
+          </div>
+        </div>
+
+        <!-- Card 2: Aesthetic -->
+        <div class="glass-card rounded-2xl p-5 flex flex-col justify-between transition-all hover:scale-[1.02] cursor-pointer" onclick="alert('Roses, tulips, vintage aesthetics, and fresh rain. 🌹🌧️')">
+          <div class="flex justify-between items-start mb-3">
+            <span class="p-2 bg-pink-500/10 text-pink-400 rounded-lg"><i data-lucide="flower-2"></i></span>
+            <span class="text-xs text-slate-500">Vibe</span>
+          </div>
+          <div>
+            <h3 class="text-lg font-bold text-white mb-1">Roses & Tulips</h3>
+            <p class="text-xs text-slate-400">Vintage charm, fresh rain, and zero pretentiousness.</p>
+          </div>
+        </div>
+
+        <!-- Card 3: The Promise -->
+        <div class="glass-card rounded-2xl p-5 flex flex-col justify-between transition-all hover:scale-[1.02] cursor-pointer" onclick="alert('No mind reading. No fake games. Always 100% real with you. 💖')">
+          <div class="flex justify-between items-start mb-3">
+            <span class="p-2 bg-blue-500/10 text-blue-400 rounded-lg"><i data-lucide="shield-check"></i></span>
+            <span class="text-xs text-slate-500">Promise</span>
+          </div>
+          <div>
+            <h3 class="text-lg font-bold text-white mb-1">100% Honesty</h3>
+            <p class="text-xs text-slate-400">No mind-reading needed here. Total transparency always.</p>
+          </div>
+        </div>
+
+      </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="mt-8 text-center text-xs text-slate-500 py-4">
+      Crafted with ❤️ for a rainy night in Tbilisi.
+    </footer>
+
+  </div>
+
+  <!-- Lucide Icons Initialization -->
+  <script>
+    lucide.createIcons();
+  </script>
+
+  <!-- Animated Rain Generator Script -->
+  <script>
+    const canvas = document.getElementById('rainCanvas');
+    const ctx = canvas.getContext('2d');
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
+
+    const raindrops = [];
+    const rainCount = 120;
+
+    for (let i = 0; i < rainCount; i++) {
+      raindrops.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        length: Math.random() * 15 + 10,
+        speed: Math.random() * 7 + 4,
+        opacity: Math.random() * 0.3 + 0.1
+      });
+    }
+
+    function animateRain() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      
+      ctx.strokeStyle = 'rgba(226, 232, 240, 0.4)';
+      ctx.lineWidth = 1;
+      ctx.lineCap = 'round';
+
+      for (let i = 0; i < raindrops.length; i++) {
+        const drop = raindrops[i];
+        
+        ctx.beginPath();
+        ctx.moveTo(drop.x, drop.y);
+        ctx.lineTo(drop.x - 1, drop.y + drop.length);
+        ctx.stroke();
+
+        drop.y += drop.speed;
+        drop.x -= 0.5;
+
+        if (drop.y > canvas.height) {
+          drop.y = -drop.length;
+          drop.x = Math.random() * canvas.width;
+        }
+      }
+      requestAnimationFrame(animateRain);
+    }
+
+    animateRain();
+  </script>
+</body>
+</html>
