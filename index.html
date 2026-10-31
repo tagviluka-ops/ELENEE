@@ -1,537 +1,489 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>A Rainy Night in Tbilisi | For Sarah</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Letter For My Princess 🌧️✨</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts for Vintage Antique & Hand-written Typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Cinzel+Decorative:wght@400;700;900&family=IM+Fell+English:ital@0;1&family=Marcellus&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-  <!-- Tailwind CSS -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  
-  <!-- Google Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Playfair+Display:ital,wght@0,500;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  
-  <!-- FontAwesome -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            night: '#090d16',
-            nightCard: 'rgba(15, 23, 42, 0.85)',
-            rosegold: '#e8b4b8',
-            rosegoldGlow: 'rgba(232, 180, 184, 0.4)',
-            warmCandle: '#ffc371',
-            crimsonSeal: '#991b1b'
-          },
-          fontFamily: {
-            serif: ['Playfair Display', 'serif'],
-            handwriting: ['Caveat', 'cursive'],
-            sans: ['Plus Jakarta Sans', 'sans-serif']
-          }
+    <style>
+        body {
+            font-family: 'Marcellus', serif;
+            background-color: #06080e;
+            overflow: hidden;
+            user-select: none;
+            -webkit-user-select: none;
         }
-      }
-    }
-  </script>
 
-  <style>
-    * {
-      -webkit-tap-highlight-color: transparent;
-      user-select: none;
-    }
+        .font-vintage-title {
+            font-family: 'Cinzel Decorative', serif;
+        }
 
-    body {
-      background-color: #090d16;
-      color: #f1f5f9;
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      min-height: 100vh;
-      overflow-x: hidden;
-    }
+        .font-handwriting {
+            font-family: 'Alex Brush', cursive;
+        }
 
-    /* Live Rain Canvas */
-    #rain-canvas {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      pointer-events: none;
-      z-index: 1;
-    }
+        .font-vintage-body {
+            font-family: 'IM Fell English', serif;
+        }
 
-    /* Vintage Wax Seal & Unfolding Mechanism */
-    .envelope-container {
-      perspective: 1200px;
-    }
+        /* Glassmorphic Controls */
+        .glass-panel {
+            background: rgba(26, 18, 12, 0.65);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
+        }
 
-    .envelope-card {
-      background: linear-gradient(145deg, rgba(20, 27, 43, 0.9), rgba(12, 17, 28, 0.95));
-      border: 1px solid rgba(232, 180, 184, 0.25);
-      border-radius: 24px;
-      backdrop-filter: blur(12px);
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.7), inset 0 0 30px rgba(232, 180, 184, 0.05);
-      transition: all 0.5s ease;
-    }
+        .glass-panel:hover {
+            border-color: rgba(212, 175, 55, 0.6);
+            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.2);
+        }
 
-    .wax-seal-btn {
-      width: 72px;
-      height: 72px;
-      background: radial-gradient(circle, #b91c1c 0%, #7f1d1d 100%);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 6px 20px rgba(185, 28, 28, 0.6), inset 0 2px 4px rgba(255, 255, 255, 0.4);
-      border: 2px solid #ef4444;
-      cursor: pointer;
-      transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-    }
+        /* 3D Envelope Perspective & Animation */
+        .perspective-1200 {
+            perspective: 1200px;
+        }
 
-    .wax-seal-btn:active {
-      transform: scale(0.92);
-    }
+        .envelope-wrapper {
+            position: relative;
+            cursor: pointer;
+            transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
 
-    .wax-seal-btn:hover {
-      transform: scale(1.08) rotate(6deg);
-    }
+        .envelope-wrapper:hover {
+            transform: translateY(-10px) rotateX(6deg) scale(1.02);
+        }
 
-    .letter-content {
-      max-height: 0;
-      opacity: 0;
-      overflow: hidden;
-      transition: max-height 0.8s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.6s ease, padding 0.5s ease;
-    }
+        /* Vintage Envelope Parchment Base */
+        .vintage-envelope-bg {
+            background: radial-gradient(circle, #e6d3af 0%, #cbb180 60%, #9e7f4c 100%);
+            box-shadow: inset 0 0 50px rgba(74, 46, 16, 0.5), 0 25px 60px rgba(0, 0, 0, 0.9);
+            border: 2px solid #7a5c2d;
+        }
 
-    .letter-content.open {
-      max-height: 800px;
-      opacity: 1;
-      padding-top: 1.5rem;
-    }
+        /* Aged Border Trimming */
+        .aged-envelope-border {
+            border: 1px solid rgba(92, 64, 25, 0.4);
+        }
 
-    .modal-backdrop {
-      background: rgba(9, 13, 22, 0.88);
-      backdrop-filter: blur(16px);
-    }
-  </style>
+        /* 3D Flap animation */
+        .flap {
+            transform-origin: top;
+            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 35;
+        }
+
+        .envelope-open .flap {
+            transform: rotateX(180deg);
+            z-index: 10;
+        }
+
+        /* Vintage Crimson Wax Seal Effect */
+        .wax-seal {
+            background: radial-gradient(circle at 35% 35%, #ba1c1c 0%, #800a0a 65%, #4a0303 100%);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.7), inset 0 2px 6px rgba(255, 180, 180, 0.4), inset 0 -4px 8px rgba(0, 0, 0, 0.6);
+            border: 2px solid #9e1313;
+        }
+
+        .wax-seal:hover {
+            transform: translate(-50%, -50%) scale(1.08);
+            box-shadow: 0 8px 25px rgba(186, 28, 28, 0.5), inset 0 2px 8px rgba(255, 200, 200, 0.5);
+        }
+
+        /* Natural Floating Animation */
+        @keyframes floatVintage {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-12px) rotate(0.6deg); }
+        }
+
+        .animate-float {
+            animation: floatVintage 6s ease-in-out infinite;
+        }
+
+        /* Vintage Parchment Scroll Modal Paper */
+        .parchment-paper {
+            background: radial-gradient(circle, #f9f3e3 0%, #eedfb8 70%, #d8be8a 100%);
+            box-shadow: inset 0 0 80px rgba(84, 52, 18, 0.45), 0 0 50px rgba(0, 0, 0, 0.85);
+            border: 1px solid #aa884a;
+        }
+
+        /* Custom Scrollbar for Vintage Modal */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 7px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: rgba(50, 32, 16, 0.2);
+            border-radius: 10px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: linear-gradient(to bottom, #9b722b, #593d11);
+            border-radius: 10px;
+        }
+
+        /* Realistic Twine / String Decor */
+        .twine-h {
+            position: absolute;
+            left: 0; right: 0; top: 50%;
+            height: 6px;
+            transform: translateY(-50%);
+            background: repeating-linear-gradient(45deg, #7c5c36, #7c5c36 4px, #583f21 4px, #583f21 8px);
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.5);
+            z-index: 25;
+            pointer-events: none;
+        }
+
+        .twine-v {
+            position: absolute;
+            top: 0; bottom: 0; left: 50%;
+            width: 6px;
+            transform: translateX(-50%);
+            background: repeating-linear-gradient(45deg, #7c5c36, #7c5c36 4px, #583f21 4px, #583f21 8px);
+            box-shadow: 3px 0 6px rgba(0, 0, 0, 0.5);
+            z-index: 25;
+            pointer-events: none;
+        }
+    </style>
 </head>
-<body class="relative">
+<body class="h-screen w-screen relative flex items-center justify-center overflow-hidden">
 
-  <!-- Interactive Rain & Light Particles Canvas -->
-  <canvas id="rain-canvas"></canvas>
-
-  <main class="relative z-10 max-w-4xl mx-auto px-4 py-8 md:py-12 min-h-screen flex flex-col justify-between">
+    <!-- Canvas for Night Sky, Twinkling Stars & Cozy Rain Streaks -->
+    <canvas id="rainCanvas" class="absolute inset-0 w-full h-full z-0"></canvas>
     
-    <!-- Top Audio Lounge Header -->
-    <header class="flex flex-col sm:flex-row items-center justify-between gap-4 bg-slate-900/80 border border-rosegold/20 rounded-full px-6 py-3 backdrop-blur-md shadow-xl mb-8">
-      <div class="flex items-center gap-3">
-        <div class="w-9 h-9 rounded-full bg-rosegold/10 border border-rosegold/30 flex items-center justify-center text-rosegold">
-          <i class="fa-solid fa-cloud-showers-heavy text-sm"></i>
-        </div>
-        <div class="text-left">
-          <p class="text-xs uppercase tracking-widest text-rosegold font-semibold">Tbilisi Rooftop Night</p>
-          <p class="text-xs text-slate-400">Radiohead — No Surprises Ambient</p>
-        </div>
-      </div>
+    <!-- Ambient Vignette Background Gradient -->
+    <div class="absolute inset-0 z-10 bg-radial from-transparent via-[#06080e]/60 to-[#030408]/95 pointer-events-none"></div>
 
-      <!-- Real Audio Player & Chime Toggle -->
-      <div class="flex items-center gap-2">
-        <button id="rainAudioBtn" onclick="toggleRainSound()" class="flex items-center gap-2 text-xs font-medium bg-rosegold/15 border border-rosegold/30 text-rosegold px-4 py-1.5 rounded-full hover:bg-rosegold hover:text-night transition-all">
-          <i class="fa-solid fa-play" id="audioIcon"></i>
-          <span id="audioText">Play Rain Sounds</span>
+    <!-- Top Audio Control Toggle -->
+    <div class="absolute top-6 right-6 z-40">
+        <button id="soundToggleBtn" onclick="toggleRainAudio()" class="glass-panel text-amber-100 hover:text-white px-5 py-2.5 rounded-full flex items-center gap-3 text-xs font-semibold tracking-widest uppercase transition-all duration-300 active:scale-95">
+            <i id="soundIcon" class="fa-solid fa-cloud-showers-heavy text-amber-400 text-sm"></i>
+            <span id="soundText">Cozy Rain Audio</span>
         </button>
-      </div>
-    </header>
+    </div>
 
-    <!-- Main Title Section -->
-    <section class="text-center mb-10">
-      <span class="inline-block px-4 py-1 rounded-full bg-rosegold/10 border border-rosegold/30 text-rosegold text-xs font-semibold tracking-wider uppercase mb-4">
-        <i class="fa-solid fa-sparkles text-xs mr-1"></i> A Quiet Corner For Sarah
-      </span>
-      <h1 class="font-serif text-3xl md:text-5xl text-slate-100 font-bold mb-3 tracking-wide">
-        Rainy Skies & Warm Lights
-      </h1>
-      <p class="text-slate-400 text-sm md:text-base max-w-lg mx-auto font-light leading-relaxed">
-        Fresh rain over Tbilisi, cozy rooftop dates, and absolute transparency. No mind games—just a spot built for you.
-      </p>
-    </section>
-
-    <!-- Interactive 3D Wax-Sealed Letter -->
-    <section class="envelope-container mb-12">
-      <div class="envelope-card p-6 md:p-8 text-center relative overflow-hidden">
+    <!-- Main Envelope Screen -->
+    <main class="relative z-20 flex flex-col items-center justify-center w-full max-w-4xl px-4">
         
-        <div id="sealedPrompt" class="flex flex-col items-center justify-center py-6">
-          <div class="wax-seal-btn mb-4" onclick="openLetter()">
-            <i class="fa-solid fa-rose text-white text-2xl"></i>
-          </div>
-          <h2 class="font-serif text-xl text-rosegold font-medium">Unseal Your Letter</h2>
-          <p class="text-xs text-slate-400 mt-1">Tap the rose wax seal to unfold</p>
+        <!-- Elegant Calligraphic Header Prompt -->
+        <div id="hintLabel" class="mb-8 text-center transition-all duration-700 transform opacity-100">
+            <span class="inline-flex items-center gap-3 px-6 py-2.5 rounded-full glass-panel text-amber-200/90 text-sm font-vintage-body tracking-wider shadow-2xl border border-amber-600/30">
+                <i class="fa-solid fa-feather-pointed text-amber-400 text-sm"></i>
+                Break the crimson seal to open
+                <i class="fa-solid fa-feather-pointed text-amber-400 text-sm"></i>
+            </span>
         </div>
 
-        <div id="letterPaper" class="letter-content rounded-xl text-left">
-          <div class="flex items-center justify-between border-b border-rosegold/20 pb-3 mb-4">
-            <span class="font-handwriting text-3xl text-rosegold">Dear Princess,</span>
-            <span class="text-xs text-slate-400"><i class="fa-solid fa-location-dot text-rosegold/70 mr-1"></i>Tbilisi, Rainy Night</span>
-          </div>
+        <!-- 3D Vintage Parchment Envelope -->
+        <div id="envelopeContainer" class="perspective-1200 animate-float">
+            <div id="envelope" onclick="openLetter()" class="envelope-wrapper relative w-[330px] sm:w-[460px] h-[230px] sm:h-[300px] rounded-xl vintage-envelope-bg">
+                
+                <!-- Corner Filigree Ornaments -->
+                <div class="absolute top-2 left-2 text-amber-900/40 text-xl pointer-events-none z-20"><i class="fa-solid fa-crown"></i></div>
+                <div class="absolute top-2 right-2 text-amber-900/40 text-xl pointer-events-none z-20"><i class="fa-solid fa-crown"></i></div>
+                <div class="absolute bottom-2 left-2 text-amber-900/40 text-xl pointer-events-none z-20"><i class="fa-solid fa-leaf"></i></div>
+                <div class="absolute bottom-2 right-2 text-amber-900/40 text-xl pointer-events-none z-20"><i class="fa-solid fa-leaf"></i></div>
 
-          <p class="font-handwriting text-2xl md:text-3xl text-slate-100 leading-relaxed space-y-4">
-            "From the moment I met you I knew you'd be such an amazing girl, you're PERFECT in every way starting from your amazing personality, down to your looks. You're amazing and I hope you soon see that. You don't deserve how you've been treated and I want to be the one who treats you better :) I love you so much princess DA BODISHI RO DAGBLOKE ❤️"
-          </p>
+                <!-- Envelope Strings / Twine Cross -->
+                <div class="twine-v"></div>
+                <div class="twine-h"></div>
 
-          <div class="mt-6 pt-4 border-t border-rosegold/20 text-right">
-            <span class="font-handwriting text-3xl text-rosegold">— Forever, L</span>
-          </div>
+                <!-- Letter Preview Inside Envelope -->
+                <div id="envelopeLetterPeek" class="absolute left-6 right-6 top-4 bottom-4 bg-[#f4e8cf] rounded-md shadow-md border border-amber-900/20 p-5 transition-all duration-700 flex flex-col justify-between">
+                    <div class="space-y-2 opacity-50">
+                        <div class="h-2 w-1/2 bg-amber-950/40 rounded"></div>
+                        <div class="h-1.5 w-full bg-amber-950/30 rounded"></div>
+                        <div class="h-1.5 w-4/5 bg-amber-950/30 rounded"></div>
+                    </div>
+                    <div class="text-right font-handwriting text-amber-950 text-2xl font-bold">For My Princess...</div>
+                </div>
+
+                <!-- Top Parchment Triangular Flap -->
+                <div class="flap absolute top-0 left-0 right-0 h-1/2 bg-gradient-to-b from-[#dfc89f] to-[#be9f67] rounded-t-xl border-t border-amber-800/50 shadow-lg origin-top flex items-start justify-center" style="clip-path: polygon(0 0, 100% 0, 50% 100%);">
+                    <div class="absolute inset-0 border-t-2 border-amber-900/30" style="clip-path: polygon(0 0, 100% 0, 50% 100%);"></div>
+                </div>
+
+                <!-- Envelope Left Triangular Pocket -->
+                <div class="absolute inset-0 bg-gradient-to-r from-[#cca972] to-[#b8945a] rounded-b-xl z-20 pointer-events-none aged-envelope-border" style="clip-path: polygon(0 0, 50% 50%, 0 100%);"></div>
+
+                <!-- Envelope Right Triangular Pocket -->
+                <div class="absolute inset-0 bg-gradient-to-l from-[#cca972] to-[#b8945a] rounded-b-xl z-20 pointer-events-none aged-envelope-border" style="clip-path: polygon(100% 0, 100% 100%, 50% 50%);"></div>
+
+                <!-- Envelope Bottom Triangular Pocket -->
+                <div class="absolute inset-0 bg-gradient-to-t from-[#bb965b] to-[#a37c42] rounded-b-xl z-20 border-b border-amber-900/40 pointer-events-none" style="clip-path: polygon(0 100%, 50% 45%, 100% 100%);"></div>
+
+                <!-- Deep Crimson Red Wax Seal -->
+                <div id="waxSeal" class="wax-seal absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-16 h-16 sm:w-20 sm:h-20 rounded-full z-30 transition-transform duration-300 flex items-center justify-center">
+                    <div class="w-11 h-11 sm:w-14 sm:h-14 rounded-full border-2 border-dashed border-red-300/40 flex items-center justify-center text-amber-200 text-xl sm:text-2xl shadow-inner">
+                        <i class="fa-solid fa-heart text-red-100 drop-shadow-md"></i>
+                    </div>
+                </div>
+
+            </div>
         </div>
 
-      </div>
-    </section>
+    </main>
 
-    <!-- Vibe Cards Grid -->
-    <section class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-      
-      <!-- Rooftop Rain & Sushi -->
-      <div onclick="openModal('rooftopModal')" class="bg-nightCard border border-rosegold/20 hover:border-rosegold/60 rounded-2xl p-6 cursor-pointer transition-all hover:-translate-y-1.5 shadow-xl group">
-        <div class="w-12 h-12 rounded-xl bg-rosegold/10 border border-rosegold/30 flex items-center justify-center text-rosegold mb-4 group-hover:scale-110 transition-transform">
-          <i class="fa-solid fa-bowl-food text-xl"></i>
+    <!-- Vintage Antique Scroll Modal -->
+    <div id="letterModal" class="fixed inset-0 z-50 flex items-center justify-center px-4 bg-black/80 backdrop-blur-md opacity-0 pointer-events-none transition-all duration-700">
+        
+        <!-- Antique Parchment Card Container -->
+        <div id="letterPaperModal" class="relative w-full max-w-xl parchment-paper rounded-2xl p-6 sm:p-12 transform scale-90 transition-all duration-700 custom-scrollbar max-h-[88vh] overflow-y-auto">
+            
+            <!-- Ornate Corner Filigrees -->
+            <div class="absolute top-4 left-4 text-amber-950/40 text-2xl pointer-events-none"><i class="fa-solid fa-scroll"></i></div>
+            <div class="absolute top-4 right-14 text-amber-950/40 text-2xl pointer-events-none"><i class="fa-solid fa-heart"></i></div>
+            <div class="absolute bottom-4 left-4 text-amber-950/40 text-2xl pointer-events-none"><i class="fa-solid fa-feather"></i></div>
+            <div class="absolute bottom-4 right-4 text-amber-950/40 text-2xl pointer-events-none"><i class="fa-solid fa-quote-right"></i></div>
+
+            <!-- Close Button -->
+            <button onclick="closeLetter()" class="absolute top-4 right-4 w-9 h-9 rounded-full bg-amber-950/10 hover:bg-amber-950/20 text-amber-950 flex items-center justify-center transition-colors">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+
+            <!-- Letter Header -->
+            <div class="text-center mb-8">
+                <span class="font-vintage-title text-xs tracking-[0.3em] uppercase text-amber-950/70 font-semibold block mb-1">To My Dearest Princess</span>
+                <h2 class="font-handwriting text-4xl sm:text-6xl text-amber-950 font-bold">My Loving Letter</h2>
+                <div class="w-32 h-0.5 bg-gradient-to-r from-transparent via-amber-900/40 to-transparent mx-auto mt-3"></div>
+            </div>
+
+            <!-- Main Exact Text Letter Content -->
+            <div class="space-y-6 font-vintage-body text-xl sm:text-2xl leading-relaxed text-amber-950">
+                <p class="first-letter:text-6xl first-letter:font-vintage-title first-letter:font-bold first-letter:text-red-900 first-letter:float-left first-letter:mr-3 first-letter:leading-none">
+                    From the moment I met you I knew you'd be such an amazing girl, you're PERFECT in every way starting from your amazing personality, down to your looks. You're amazing and I hope you soon see that. You don't deserve how youve been treated and I want to be the one who treats you better :) I love you so much princess.
+                </p>
+                <p class="font-bold text-red-950 bg-amber-900/10 p-6 rounded-xl border border-amber-900/20 shadow-inner leading-relaxed">
+                    imedia chven shoris rame gamova vici jer adrea magram yvelaperi wingvaqvs da SHENTAN MINDA VIYO YOVELTVIS. I LOVE EVERYTHING ABIUT YOU DA ASEVE BODISHI RO DAGBLOKEL:((( I FEEL SO BAD THAT I MADE YOU CRY
+                </p>
+            </div>
+
+            <!-- Vintage Signature & Close Action -->
+            <div class="mt-10 pt-6 border-t border-amber-950/20 flex flex-wrap items-center justify-between gap-4">
+                <div class="font-handwriting text-3xl text-amber-950 font-bold">
+                    Forever Yours ❤️
+                </div>
+                <button onclick="closeLetter()" class="px-7 py-3 rounded-full bg-gradient-to-r from-amber-900 via-amber-800 to-amber-950 hover:brightness-110 text-amber-100 font-vintage-body text-sm tracking-widest uppercase font-bold shadow-xl transition-all duration-200 active:scale-95 border border-amber-700/50">
+                    Close Letter 📜
+                </button>
+            </div>
+
         </div>
-        <h3 class="font-serif text-lg text-slate-100 font-semibold mb-2">Rooftop Sushi & Ramen</h3>
-        <p class="text-xs text-slate-400 leading-relaxed">Steaming bowls of ramen, fresh sushi rolls, and watching rain drops hit the city lights under a warm blanket.</p>
-        <span class="inline-flex items-center gap-1.5 text-xs text-rosegold mt-4 font-medium">Plan rooftop date <i class="fa-solid fa-arrow-right text-[10px]"></i></span>
-      </div>
-
-      <!-- Vintage & Florals -->
-      <div onclick="openModal('floralModal')" class="bg-nightCard border border-rosegold/20 hover:border-rosegold/60 rounded-2xl p-6 cursor-pointer transition-all hover:-translate-y-1.5 shadow-xl group">
-        <div class="w-12 h-12 rounded-xl bg-rosegold/10 border border-rosegold/30 flex items-center justify-center text-rosegold mb-4 group-hover:scale-110 transition-transform">
-          <i class="fa-solid fa-seedling text-xl"></i>
-        </div>
-        <h3 class="font-serif text-lg text-slate-100 font-semibold mb-2">Vintage Roses & Lace</h3>
-        <p class="text-xs text-slate-400 leading-relaxed">Soft lace accents, red roses, pastel tulips, and warm candle lights creating a quiet romantic atmosphere.</p>
-        <span class="inline-flex items-center gap-1.5 text-xs text-rosegold mt-4 font-medium">Build bouquet <i class="fa-solid fa-arrow-right text-[10px]"></i></span>
-      </div>
-
-      <!-- Zero Mind Games -->
-      <div onclick="openModal('transparencyModal')" class="bg-nightCard border border-rosegold/20 hover:border-rosegold/60 rounded-2xl p-6 cursor-pointer transition-all hover:-translate-y-1.5 shadow-xl group">
-        <div class="w-12 h-12 rounded-xl bg-rosegold/10 border border-rosegold/30 flex items-center justify-center text-rosegold mb-4 group-hover:scale-110 transition-transform">
-          <i class="fa-solid fa-comments text-xl"></i>
-        </div>
-        <h3 class="font-serif text-lg text-slate-100 font-semibold mb-2">Zero Mind Games</h3>
-        <p class="text-xs text-slate-400 leading-relaxed">Pure honesty, deep midnight conversations, and never having to guess or read minds. Just absolute clarity.</p>
-        <span class="inline-flex items-center gap-1.5 text-xs text-rosegold mt-4 font-medium">Read promise <i class="fa-solid fa-arrow-right text-[10px]"></i></span>
-      </div>
-
-    </section>
-
-    <!-- Footer -->
-    <footer class="text-center text-xs text-slate-500 border-t border-slate-800/80 pt-6">
-      Designed with soft rain & candle lights for Sarah in Tbilisi &copy; 2026
-    </footer>
-
-  </main>
-
-  <!-- Interactive Modals -->
-
-  <!-- Rooftop Date Planner Modal -->
-  <div id="rooftopModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 modal-backdrop hidden">
-    <div class="bg-slate-900 border border-rosegold/30 rounded-2xl p-6 md:p-8 max-w-md w-full relative shadow-2xl">
-      <button onclick="closeModal('rooftopModal')" class="absolute top-4 right-4 text-slate-400 hover:text-white">
-        <i class="fa-solid fa-xmark text-lg"></i>
-      </button>
-      <div class="w-10 h-10 rounded-full bg-rosegold/15 flex items-center justify-center text-rosegold mb-4">
-        <i class="fa-solid fa-utensils"></i>
-      </div>
-      <h3 class="font-serif text-xl text-slate-100 font-bold mb-2">Rooftop Night Menu</h3>
-      <p class="text-slate-300 text-sm leading-relaxed mb-4 font-light">
-        A sheltered rooftop spot overlooking Tbilisi while rain taps gently overhead. Pick your comfort pairing:
-      </p>
-
-      <div class="space-y-2 mb-4">
-        <div class="p-3 rounded-lg bg-slate-800/70 border border-rosegold/20 flex items-center justify-between text-xs text-slate-200">
-          <span>🍣 Salmon Nigiri & Spicy Tuna Roll</span>
-          <span class="text-rosegold font-semibold">Selected</span>
-        </div>
-        <div class="p-3 rounded-lg bg-slate-800/70 border border-rosegold/20 flex items-center justify-between text-xs text-slate-200">
-          <span>🍜 Steaming Tonkotsu Ramen</span>
-          <span class="text-rosegold font-semibold">Selected</span>
-        </div>
-      </div>
-
-      <div class="p-3 rounded-lg bg-rosegold/10 border border-rosegold/20 text-xs text-rosegold text-center font-medium">
-        🌧️ Paired with soft rain & Radiohead playing in the background.
-      </div>
     </div>
-  </div>
 
-  <!-- Floral Bouquet Modal -->
-  <div id="floralModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 modal-backdrop hidden">
-    <div class="bg-slate-900 border border-rosegold/30 rounded-2xl p-6 md:p-8 max-w-md w-full relative shadow-2xl">
-      <button onclick="closeModal('floralModal')" class="absolute top-4 right-4 text-slate-400 hover:text-white">
-        <i class="fa-solid fa-xmark text-lg"></i>
-      </button>
-      <div class="w-10 h-10 rounded-full bg-rosegold/15 flex items-center justify-center text-rosegold mb-4">
-        <i class="fa-solid fa-rose"></i>
-      </div>
-      <h3 class="font-serif text-xl text-slate-100 font-bold mb-2">Vintage Floral Arrangement</h3>
-      <p class="text-slate-300 text-sm leading-relaxed mb-4 font-light">
-        A bouquet combining classic deep red roses and fresh tulips, tied together with vintage lace ribbons.
-      </p>
+    <!-- Background Rain Canvas & Synthesized Rain Sound Logic -->
+    <script>
+        // Setup Rain & Starfield Canvas
+        const canvas = document.getElementById('rainCanvas');
+        const ctx = canvas.getContext('2d');
 
-      <div class="grid grid-cols-2 gap-3 mb-4">
-        <div class="p-3 rounded-lg bg-slate-800/70 border border-rosegold/20 text-center text-xs text-rosegold font-medium">
-          🌹 Red Roses
-        </div>
-        <div class="p-3 rounded-lg bg-slate-800/70 border border-rosegold/20 text-center text-xs text-rosegold font-medium">
-          🌷 Pink Tulips
-        </div>
-      </div>
+        let width = canvas.width = window.innerWidth;
+        let height = canvas.height = window.innerHeight;
 
-      <div class="p-3 rounded-lg bg-rosegold/10 border border-rosegold/20 text-xs text-rosegold text-center font-medium">
-        🕯️ Glowing candle lights & lace aesthetic.
-      </div>
-    </div>
-  </div>
+        window.addEventListener('resize', () => {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+            initScene();
+        });
 
-  <!-- Transparency Modal -->
-  <div id="transparencyModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 modal-backdrop hidden">
-    <div class="bg-slate-900 border border-rosegold/30 rounded-2xl p-6 md:p-8 max-w-md w-full relative shadow-2xl">
-      <button onclick="closeModal('transparencyModal')" class="absolute top-4 right-4 text-slate-400 hover:text-white">
-        <i class="fa-solid fa-xmark text-lg"></i>
-      </button>
-      <div class="w-10 h-10 rounded-full bg-rosegold/15 flex items-center justify-center text-rosegold mb-4">
-        <i class="fa-solid fa-heart-circle-check"></i>
-      </div>
-      <h3 class="font-serif text-xl text-slate-100 font-bold mb-2">My Promise To You</h3>
-      <p class="text-slate-300 text-sm leading-relaxed mb-4 font-light">
-        No guessing games, no fake behavior, and no expecting you to read minds. Just clear, honest communication where you can always be 100% yourself without ever feeling misunderstood or judged.
-      </p>
-      <div class="p-3 rounded-lg bg-rosegold/10 border border-rosegold/20 text-xs text-rosegold text-center font-medium">
-        🤍 Complete authenticity and steady support.
-      </div>
-    </div>
-  </div>
+        const stars = [];
+        const rainDrops = [];
 
-  <!-- Real Rain Sound Generator via Web Audio API -->
-  <script>
-    /* -------------------------------------------------------------
-       1. Real-Time Rain & Bokeh Splashes Physics Canvas
-    ------------------------------------------------------------- */
-    const canvas = document.getElementById('rain-canvas');
-    const ctx = canvas.getContext('2d');
+        function initScene() {
+            stars.length = 0;
+            rainDrops.length = 0;
 
-    function resizeCanvas() {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    }
-    resizeCanvas();
-    window.addEventListener('resize', resizeCanvas);
+            // Initialize Stars
+            for (let i = 0; i < 180; i++) {
+                stars.push({
+                    x: Math.random() * width,
+                    y: Math.random() * height,
+                    r: Math.random() * 1.2 + 0.3,
+                    alpha: Math.random(),
+                    speed: Math.random() * 0.01 + 0.003
+                });
+            }
 
-    const raindrops = [];
-    const candleLights = [];
-    const splashes = [];
-
-    class RainDrop {
-      constructor() { this.reset(); }
-      reset() {
-        this.x = Math.random() * canvas.width;
-        this.y = Math.random() * -canvas.height;
-        this.length = Math.random() * 20 + 12;
-        this.speed = Math.random() * 10 + 7;
-        this.opacity = Math.random() * 0.4 + 0.15;
-      }
-      update() {
-        this.y += this.speed;
-        this.x += 0.4;
-        if (this.y > canvas.height - 20) {
-          if (Math.random() > 0.7) {
-            splashes.push(new Splash(this.x, canvas.height - 15));
-          }
-          this.reset();
+            // Initialize Rain Drops
+            for (let i = 0; i < 220; i++) {
+                rainDrops.push({
+                    x: Math.random() * width,
+                    y: Math.random() * height,
+                    length: Math.random() * 20 + 10,
+                    speed: Math.random() * 10 + 12,
+                    alpha: Math.random() * 0.3 + 0.15
+                });
+            }
         }
-      }
-      draw() {
-        ctx.beginPath();
-        ctx.moveTo(this.x, this.y);
-        ctx.lineTo(this.x + 0.8, this.y + this.length);
-        ctx.strokeStyle = `rgba(232, 180, 184, ${this.opacity})`;
-        ctx.lineWidth = 1;
-        ctx.stroke();
-      }
-    }
+        initScene();
 
-    class Splash {
-      constructor(x, y) {
-        this.x = x;
-        this.y = y;
-        this.radius = 1;
-        this.maxRadius = Math.random() * 6 + 3;
-        this.opacity = 0.5;
-      }
-      update() {
-        this.radius += 0.4;
-        this.opacity -= 0.03;
-      }
-      draw() {
-        if (this.opacity <= 0) return;
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-        ctx.strokeStyle = `rgba(232, 180, 184, ${this.opacity})`;
-        ctx.lineWidth = 0.8;
-        ctx.stroke();
-      }
-    }
+        // Render Canvas Animation
+        function drawScene() {
+            ctx.clearRect(0, 0, width, height);
 
-    class CandleLight {
-      constructor() { this.reset(); }
-      reset() {
-        this.x = Math.random() * canvas.width;
-        this.y = Math.random() * canvas.height;
-        this.radius = Math.random() * 5 + 2;
-        this.speedY = (Math.random() - 0.5) * 0.2;
-        this.speedX = (Math.random() - 0.5) * 0.2;
-        this.opacity = Math.random() * 0.35 + 0.15;
-      }
-      update() {
-        this.x += this.speedX;
-        this.y += this.speedY;
-        if (this.x < 0 || this.x > canvas.width || this.y < 0 || this.y > canvas.height) this.reset();
-      }
-      draw() {
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(255, 195, 113, ${this.opacity})`;
-        ctx.shadowColor = '#ffc371';
-        ctx.shadowBlur = 10;
-        ctx.fill();
-        ctx.shadowBlur = 0;
-      }
-    }
+            // 1. Draw Night Sky Stars
+            for (let i = 0; i < stars.length; i++) {
+                const star = stars[i];
+                star.alpha += star.speed;
+                if (star.alpha > 1 || star.alpha < 0) {
+                    star.speed = -star.speed;
+                }
 
-    for (let i = 0; i < 80; i++) raindrops.push(new RainDrop());
-    for (let i = 0; i < 20; i++) candleLights.push(new CandleLight());
+                ctx.beginPath();
+                ctx.arc(star.x, star.y, star.r, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(255, 255, 255, ${Math.max(0, Math.min(1, star.alpha))})`;
+                ctx.fill();
+            }
 
-    function renderCanvas() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
+            // 2. Draw Gentle Falling Rain Streaks
+            ctx.lineWidth = 1.2;
+            ctx.lineCap = 'round';
+            for (let i = 0; i < rainDrops.length; i++) {
+                const drop = rainDrops[i];
+                ctx.beginPath();
+                ctx.moveTo(drop.x, drop.y);
+                ctx.lineTo(drop.x - 2, drop.y + drop.length);
+                ctx.strokeStyle = `rgba(175, 210, 240, ${drop.alpha})`;
+                ctx.stroke();
 
-      raindrops.forEach(drop => { drop.update(); drop.draw(); });
-      candleLights.forEach(light => { light.update(); light.draw(); });
+                drop.y += drop.speed;
+                drop.x -= 0.5;
 
-      for (let i = splashes.length - 1; i >= 0; i--) {
-        splashes[i].update();
-        splashes[i].draw();
-        if (splashes[i].opacity <= 0) splashes.splice(i, 1);
-      }
+                if (drop.y > height) {
+                    drop.y = -drop.length;
+                    drop.x = Math.random() * width;
+                }
+            }
 
-      requestAnimationFrame(renderCanvas);
-    }
-    renderCanvas();
+            requestAnimationFrame(drawScene);
+        }
 
-    /* -------------------------------------------------------------
-       2. Wax Seal Letter Unfolding
-    ------------------------------------------------------------- */
-    function openLetter() {
-      document.getElementById('letterPaper').classList.add('open');
-      document.getElementById('sealedPrompt').style.display = 'none';
-    }
+        window.onload = function() {
+            drawScene();
+        };
 
-    /* -------------------------------------------------------------
-       3. Modal Controls
-    ------------------------------------------------------------- */
-    function openModal(id) { document.getElementById(id).classList.remove('hidden'); }
-    function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
+        // Envelope Open & Modal Triggering
+        let isOpened = false;
 
-    /* -------------------------------------------------------------
-       4. Real Rain Sound Generator (Pink Noise + Chime Synth)
-    ------------------------------------------------------------- */
-    let audioCtx = null;
-    let isPlaying = false;
-    let noiseNode = null;
-    let gainNode = null;
+        function openLetter() {
+            if (isOpened) return;
+            isOpened = true;
 
-    function toggleRainSound() {
-      const btnText = document.getElementById('audioText');
-      const icon = document.getElementById('audioIcon');
+            const envelope = document.getElementById('envelope');
+            const hintLabel = document.getElementById('hintLabel');
+            const modal = document.getElementById('letterModal');
+            const modalPaper = document.getElementById('letterPaperModal');
 
-      if (!audioCtx) {
-        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-      }
+            hintLabel.classList.add('opacity-0', '-translate-y-4');
+            envelope.classList.add('envelope-open');
 
-      if (!isPlaying) {
-        audioCtx.resume();
-        startRainAudio();
-        isPlaying = true;
-        btnText.innerText = "Playing Rain & Chimes";
-        icon.className = "fa-solid fa-pause";
-      } else {
-        audioCtx.suspend();
-        isPlaying = false;
-        btnText.innerText = "Play Rain Sounds";
-        icon.className = "fa-solid fa-play";
-      }
-    }
+            setTimeout(() => {
+                modal.classList.remove('opacity-0', 'pointer-events-none');
+                modalPaper.classList.remove('scale-90');
+                modalPaper.classList.add('scale-100');
+            }, 650);
+        }
 
-    function startRainAudio() {
-      const bufferSize = audioCtx.sampleRate * 2;
-      const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
-      const data = buffer.getChannelData(0);
+        function closeLetter() {
+            const envelope = document.getElementById('envelope');
+            const hintLabel = document.getElementById('hintLabel');
+            const modal = document.getElementById('letterModal');
+            const modalPaper = document.getElementById('letterPaperModal');
 
-      // Pink noise rain simulation algorithm
-      let b0 = 0, b1 = 0, b2 = 0, b3 = 0, b4 = 0, b5 = 0, b6 = 0;
-      for (let i = 0; i < bufferSize; i++) {
-        let white = Math.random() * 2 - 1;
-        b0 = 0.99886 * b0 + white * 0.0555179;
-        b1 = 0.99332 * b1 + white * 0.0750759;
-        b2 = 0.96900 * b2 + white * 0.1538520;
-        b3 = 0.86650 * b3 + white * 0.3104856;
-        b4 = 0.55000 * b4 + white * 0.5329522;
-        b5 = -0.7616 * b5 - white * 0.0168980;
-        data[i] = b0 + b1 + b2 + b3 + b4 + b5 + b6 + white * 0.5362;
-        data[i] *= 0.04; // soften rain volume
-        b6 = white * 0.115926;
-      }
+            modalPaper.classList.remove('scale-100');
+            modalPaper.classList.add('scale-90');
+            modal.classList.add('opacity-0', 'pointer-events-none');
 
-      noiseNode = audioCtx.createBufferSource();
-      noiseNode.buffer = buffer;
-      noiseNode.loop = true;
+            setTimeout(() => {
+                envelope.classList.remove('envelope-open');
+                hintLabel.classList.remove('opacity-0', '-translate-y-4');
+                isOpened = false;
+            }, 400);
+        }
 
-      const filter = audioCtx.createBiquadFilter();
-      filter.type = 'lowpass';
-      filter.frequency.setValueAtTime(1000, audioCtx.currentTime);
+        // Web Audio Synthesizer: Pure Realistic Gentle Rain Audio (Zero External Asset Dependency)
+        let audioCtx = null;
+        let isPlayingAudio = false;
+        let rainNoiseNode = null;
 
-      gainNode = audioCtx.createGain();
-      gainNode.gain.setValueAtTime(0.15, audioCtx.currentTime);
+        function toggleRainAudio() {
+            const btnText = document.getElementById('soundText');
+            const btnIcon = document.getElementById('soundIcon');
 
-      noiseNode.connect(filter);
-      filter.connect(gainNode);
-      gainNode.connect(audioCtx.destination);
-      noiseNode.start();
+            if (!isPlayingAudio) {
+                startRainAudio();
+                isPlayingAudio = true;
+                btnText.textContent = "Pause Rain Audio";
+                btnIcon.className = "fa-solid fa-volume-high text-amber-400 text-sm animate-pulse";
+            } else {
+                stopRainAudio();
+                isPlayingAudio = false;
+                btnText.textContent = "Cozy Rain Audio";
+                btnIcon.className = "fa-solid fa-cloud-showers-heavy text-amber-400 text-sm";
+            }
+        }
 
-      playAmbientChimes();
-    }
+        function startRainAudio() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
 
-    function playAmbientChimes() {
-      if (!isPlaying) return;
-      const notes = [523.25, 659.25, 783.99, 1046.50];
-      const note = notes[Math.floor(Math.random() * notes.length)];
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
 
-      const osc = audioCtx.createOscillator();
-      const chimeGain = audioCtx.createGain();
+            // Synthesize pink/brown noise for rain sound
+            const bufferSize = audioCtx.sampleRate * 2;
+            const noiseBuffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+            const output = noiseBuffer.getChannelData(0);
+            let b0 = 0, b1 = 0, b2 = 0, b3 = 0, b4 = 0, b5 = 0, b6 = 0;
 
-      osc.type = 'sine';
-      osc.frequency.setValueAtTime(note, audioCtx.currentTime);
+            for (let i = 0; i < bufferSize; i++) {
+                const white = Math.random() * 2 - 1;
+                b0 = 0.99886 * b0 + white * 0.0555179;
+                b1 = 0.99332 * b1 + white * 0.0750759;
+                b2 = 0.96900 * b2 + white * 0.1538520;
+                b3 = 0.86650 * b3 + white * 0.3104856;
+                b4 = 0.55000 * b4 + white * 0.5329522;
+                b5 = -0.7616 * b5 - white * 0.0168980;
+                output[i] = b0 + b1 + b2 + b3 + b4 + b5 + b6 + white * 0.5362;
+                output[i] *= 0.06;
+                b6 = white * 0.115926;
+            }
 
-      chimeGain.gain.setValueAtTime(0.04, audioCtx.currentTime);
-      chimeGain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 3.0);
+            rainNoiseNode = audioCtx.createBufferSource();
+            rainNoiseNode.buffer = noiseBuffer;
+            rainNoiseNode.loop = true;
 
-      osc.connect(chimeGain);
-      chimeGain.connect(audioCtx.destination);
+            // Lowpass Filter for soft gentle pitter-patter sound
+            const filter = audioCtx.createBiquadFilter();
+            filter.type = 'lowpass';
+            filter.frequency.setValueAtTime(800, audioCtx.currentTime);
 
-      osc.start();
-      osc.stop(audioCtx.currentTime + 3.0);
+            const gainNode = audioCtx.createGain();
+            gainNode.gain.setValueAtTime(0.2, audioCtx.currentTime);
 
-      setTimeout(playAmbientChimes, 1200);
-    }
-  </script>
+            rainNoiseNode.connect(filter);
+            filter.connect(gainNode);
+            gainNode.connect(audioCtx.destination);
+
+            rainNoiseNode.start();
+        }
+
+        function stopRainAudio() {
+            if (rainNoiseNode) {
+                rainNoiseNode.stop();
+                rainNoiseNode.disconnect();
+                rainNoiseNode = null;
+            }
+        }
+    </script>
 </body>
 </html>
